@@ -41,7 +41,7 @@ export const createUserProfileDocument = async(userAuth, additionalData) => {
   return userRef;
 }
 
-
+firebase.initializeApp(config);
 // import date from js to firestore
 
 export const addCollectionAndDocuments  = async (collectionKey, objectsToAdd)=> {
@@ -57,7 +57,28 @@ export const addCollectionAndDocuments  = async (collectionKey, objectsToAdd)=> 
   return await batch.commit(); // return await batch commit before we save this file
 }
 
-firebase.initializeApp(config);
+// get whole snapshot =================
+
+export const convertCollectionsSnapshotToMap = collections => {
+  const transformedCollection = collections.docs.map(doc => {
+    const {title, items} = doc.data();
+
+    return{
+      routeName: encodeURI(title.toLowerCase()), //beacause title is unique
+      id: doc.id,
+      title,
+      items
+    }
+  })
+  return transformedCollection.reduce((accumulator, collection) => {
+    accumulator[collection.title.toLowerCase()] = collection;
+     //return to array with coresponsive object of collection
+    //  hats, jacket,...
+    return accumulator;
+  },{})
+}
+
+
 
 export const auth = firebase.auth();
 export const firestore = firebase.firestore();
