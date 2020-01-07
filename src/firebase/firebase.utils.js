@@ -44,9 +44,17 @@ export const createUserProfileDocument = async(userAuth, additionalData) => {
 
 // import date from js to firestore
 
-export const addCollectionAndDocuments  = (collectionKey, objectsToAdd)=> {
+export const addCollectionAndDocuments  = async (collectionKey, objectsToAdd)=> {
   const collectionRef = firestore.collection(collectionKey);
-  console.log(collectionRef)
+  const batch = firestore.batch();//to write one or more document
+
+  //loop over each object 
+  objectsToAdd.forEach(obj => {
+    const newDocRef = collectionRef.doc();//point to object with own unique ID 
+    batch.set(newDocRef, obj);//set of value 
+  });
+  //batch.commit() return one promise
+  return await batch.commit(); // return await batch commit before we save this file
 }
 
 firebase.initializeApp(config);
