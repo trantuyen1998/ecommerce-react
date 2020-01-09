@@ -20,3 +20,15 @@ createSelector(
     [selectCollections],
     collections => (collections ? collections[collectionUrlParam] : null)
 )
+
+export const selectIsCollectionFetching = createSelector(
+    [selectShop],
+    shop => shop.isFetching
+);
+
+// fig errer child item
+
+export const selectIsCollectionsLoaded = createSelector(
+    [selectShop],
+    shop => !!shop.collections ///truthly
+)

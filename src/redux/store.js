@@ -4,10 +4,14 @@ import logger from 'redux-logger';
 
 import rootReducer from './root-reducer';
 import { persistStore } from 'redux-persist';
+import thunk from 'redux-thunk';
 
-const middlewares = [];
 
-// opimize dev and build
+
+const middlewares = [thunk];
+
+
+// opimize dev and build when deploy
 
 if(process.env.NODE_ENV === 'development'){
     middlewares.push(logger)
