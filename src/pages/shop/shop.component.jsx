@@ -25,13 +25,15 @@ class ShopPage extends React.Component {
         const { updateCollections } = this.props;
         const collectionsRef = firestore.collection('collections');
 
-        this.unsubcribeFromSnapshot = collectionsRef.onSnapshot(
-            async snapshot => {
-                const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
-                updateCollections(collectionsMap); //integrate react and redux
-                this.setState({ loading: false })
-            }
-        );//whenever updating and run the first 
+        fetch("https://firestore.googleapis.com/v1/projects/ecommerce-361d1/databases/(default)/documents/collections")
+        .then(res => res.json())
+        .then(collections => console.log(collections))
+        //whenever updating and run the first 
+        collectionsRef.get().then(async snapshot => {
+            const collectionsMap = convertCollectionsSnapshotToMap(snapshot);
+            updateCollections(collectionsMap); //integrate react and redux
+            this.setState({ loading: false })
+        });
     }
 
     render() {
@@ -41,7 +43,7 @@ class ShopPage extends React.Component {
             // nested route in shoppage
             <div className='shop-page'>
                 <Route
-                    exact 
+                    exact
                     path={`${match.path}`}
                     render={(props) => <CollectionsOverviewWithSpinner isLoading={loading} {...props} />} />
                 <Route
