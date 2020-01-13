@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Route } from 'react-router-dom';
 import { fetchCollectionsStart } from '../../redux/shop/shop.actions';
 import { connect } from 'react-redux';
@@ -7,15 +7,12 @@ import CollectionPageContainer from '../collection/collection.container';
 
 
 
-class ShopPage extends React.Component {
+const ShopPage =({fetchCollectionsStart, match}) => {
 
-    componentDidMount() {
-        const { fetchCollectionsStart } = this.props;
-        fetchCollectionsStart();
-    }
+    useEffect(()=> {
+        fetchCollectionsStart()
+    },[fetchCollectionsStart])
 
-    render() {
-        const { match } = this.props;
         return (
             // nested route in shoppage
             <div className='shop-page'>
@@ -28,7 +25,6 @@ class ShopPage extends React.Component {
                     component = {CollectionPageContainer}/>
             </div>
         )
-    }
 }
 
 const mapDispatchToProps = dispatch => ({
