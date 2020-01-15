@@ -15,7 +15,7 @@ const CollectionItemContainer = (props) => (
         {
             addItemToCart => <CollectionItem
                 {...props}
-                addItem = {item => addItemToCart({ variables: { item } })}
+                addItem={item => addItemToCart({ variables: { item } })}
             />
         }
     </Mutation>
